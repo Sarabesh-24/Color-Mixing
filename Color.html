@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Mixing App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            vertical-align: middle;
+        }
+        .color-input {
+            margin: 15px;
+        }
+        .plus-sign, .equals-sign {
+            font-size: 2rem;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Mixing App</h1>
+    <p>Select two colors to see the mixed result:</p>
+    <div class="container">
+        <input type="color" id="color1" class="color-input" value="#ff0000">
+        <input type="color" id="color2" class="color-input" value="#0000ff">
+        <button onclick="mixColors()">Mix Colors</button>
+    </div>
+    <div>
+        <div id="color1Box" class="color-box"></div>
+        <span class="plus-sign">+</span>
+        <div id="color2Box" class="color-box"></div>
+        <span class="equals-sign">=</span>
+        <div id="resultBox" class="color-box"></div>
+    </div>
+    <p id="resultText"></p>
+
+    <script>
+        function mixColors() {
+            const color1 = document.getElementById('color1').value;
+            const color2 = document.getElementById('color2').value;
+            
+            document.getElementById('color1Box').style.backgroundColor = color1;
+            document.getElementById('color2Box').style.backgroundColor = color2;
+
+            const color1RGB = hexToRGB(color1);
+            const color2RGB = hexToRGB(color2);
+
+            const mixedColorRGB = {
+                r: Math.floor((color1RGB.r + color2RGB.r) / 2),
+                g: Math.floor((color1RGB.g + color2RGB.g) / 2),
+                b: Math.floor((color1RGB.b + color2RGB.b) / 2),
+            };
+
+            const mixedColorHex = rgbToHex(mixedColorRGB.r, mixedColorRGB.g, mixedColorRGB.b);
+            document.getElementById('resultBox').style.backgroundColor = mixedColorHex;
+            document.getElementById('resultText').textContent = `Mixed Color: ${mixedColorHex.toUpperCase()}`;
+        }
+
+        function hexToRGB(hex) {
+            const bigint = parseInt(hex.slice(1), 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+
+        function rgbToHex(r, g, b) {
+            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+        }
+    </script>
+</body>
+</html>
